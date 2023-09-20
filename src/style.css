@@ -56,3 +56,29 @@
     @apply font-mono text-[0.875rem] leading-6 text-black-600;
   }
 }
+
+@layer components {
+  .collapsible {
+    @apply fixed bottom-0 top-0 z-50 w-0 overflow-x-hidden bg-black-900 transition-all duration-500;
+  }
+
+  .collapsible-content {
+    @apply w-full -translate-x-full  opacity-0;
+  }
+
+  .collapsible + .sticky {
+    @apply ml-0;
+  }
+
+  .collapsible.expand {
+    @apply w-64;
+  }
+
+  .collapsible.expand > .collapsible-content {
+    @apply translate-x-0 opacity-100;
+  }
+
+  .collapsible.expand + .sticky {
+    @apply ml-64;
+  }
+}
