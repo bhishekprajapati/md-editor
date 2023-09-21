@@ -82,3 +82,29 @@
     @apply ml-64;
   }
 }
+
+@layer components {
+  .bar {
+    @apply inline-block h-0.5 w-6 bg-cream;
+  }
+
+  .hamburger {
+    @apply inline-flex h-14 w-14 flex-col items-center justify-center gap-y-1 bg-black-600;
+  }
+
+  .hamburger > .bar:nth-child(2n + 1) {
+    @apply transition-transform duration-200;
+  }
+
+  .hamburger.active > .bar:nth-child(1) {
+    @apply translate-y-1.5 rotate-45;
+  }
+
+  .hamburger.active > .bar:nth-child(2) {
+    @apply opacity-0;
+  }
+
+  .hamburger.active > .bar:nth-child(3) {
+    @apply -translate-y-1.5 -rotate-45;
+  }
+}
