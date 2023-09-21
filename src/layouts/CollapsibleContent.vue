@@ -9,8 +9,8 @@ const props = defineProps(["isCollapsed"]);
         <slot name="collapsible-content"></slot>
       </div>
     </div>
-    <div class="h-screen">
-      <slot name="sticky-content"></slot>
+    <div class="viewport h-screen">
+      <slot name="viewport"></slot>
     </div>
   </div>
 </template>

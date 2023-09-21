@@ -21,6 +21,10 @@
 }
 
 @layer components {
+  .viewport {
+    @apply transition-all duration-500;
+  }
+
   .collapsible {
     @apply fixed bottom-0 top-0 z-50 w-0 overflow-x-hidden bg-black-900 transition-all duration-500;
   }
@@ -29,7 +33,7 @@
     @apply w-full -translate-x-full  opacity-0;
   }
 
-  .collapsible + .sticky {
+  .collapsible + .viewport {
     @apply ml-0;
   }
 
@@ -41,7 +45,7 @@
     @apply translate-x-0 opacity-100;
   }
 
-  .collapsible.expand + .sticky {
+  .collapsible.expand + .viewport {
     @apply ml-64;
   }
 }
