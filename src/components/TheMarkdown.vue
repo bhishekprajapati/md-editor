@@ -10,15 +10,24 @@ const markdownCode = ref(sampleMarkdownCode);
 <template>
   <section class="flex h-full">
     <div class="flex-1">
-      <div class="h-full w-full">
+      <div class="relative h-full w-full pt-8">
+        <div
+          class="display-s absolute left-0 right-0 top-0 bg-cream px-4 py-2 font-medium">
+          MARKDOWN
+        </div>
         <TheMarkdownEditor
           :value="markdownCode"
           @input="(e) => (markdownCode = e.target.value)" />
       </div>
     </div>
-    <div
-      class="flex-1 overflow-y-auto border-l-2 border-grey-600 scrollbar-none">
-      <TheMarkdownPreviewer :code="markdownCode" />
+    <div class="flex-1 border-l-2 border-grey-600">
+      <div class="relative h-full w-full pt-8">
+        <div
+          class="display-s absolute left-0 right-0 top-0 bg-cream px-4 py-2 font-medium">
+          PREVIEW
+        </div>
+        <TheMarkdownPreviewer :code="markdownCode" />
+      </div>
     </div>
   </section>
 </template>
