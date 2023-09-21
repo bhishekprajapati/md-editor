@@ -4,7 +4,7 @@ const props = defineProps(["isCollapsed"]);
 
 <template>
   <div class="overflow-hidden">
-    <div class="collapsible" :class="isCollapsed ? 'expand' : ''">
+    <div class="collapsible" :class="isCollapsed ? '' : 'expand'">
       <div class="collapsible-content">
         <slot name="collapsible-content"></slot>
       </div>
