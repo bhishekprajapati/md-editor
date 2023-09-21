@@ -3,43 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-preview font-bold text-black-600;
-  }
-
-  h1 {
-    @apply text-[2rem];
-  }
-
-  h2 {
-    @apply text-[1.75rem] font-light;
-  }
-
-  h3 {
-    @apply text-[1.5rem];
-  }
-
-  h4 {
-    @apply text-[1.25rem];
-  }
-
-  h5 {
-    @apply text-[1rem];
-  }
-
-  h6 {
-    @apply text-[0.875rem] text-orange-900;
-  }
-
-  p {
-    @apply font-preview text-[0.875rem] leading-6 text-black-600;
-  }
-
   .display-m {
     @apply font-display text-[0.9375rem] text-black-600;
   }
@@ -106,5 +69,98 @@
 
   .hamburger.active > .bar:nth-child(3) {
     @apply -translate-y-1.5 -rotate-45;
+  }
+}
+
+@layer components {
+  .markdown-preview {
+    @apply font-preview text-[0.875rem] leading-6 text-black-600;
+  }
+
+  .markdown-preview h1,
+  .markdown-preview h2,
+  .markdown-preview h3,
+  .markdown-preview h4,
+  .markdown-preview h5,
+  .markdown-preview h6 {
+    @apply mb-[1.25rem] font-preview font-bold text-black-600;
+  }
+
+  .markdown-preview h1 {
+    @apply text-[2rem];
+  }
+
+  .markdown-preview h2 {
+    @apply mb-[1.37rem] text-[1.75rem] font-light;
+  }
+
+  .markdown-preview h3 {
+    @apply text-[1.5rem];
+  }
+
+  .markdown-preview h4 {
+    @apply text-[1.25rem];
+  }
+
+  .markdown-preview h5 {
+    @apply text-[1rem];
+  }
+
+  .markdown-preview h6 {
+    @apply text-[0.875rem] text-orange-900;
+  }
+
+  .markdown-preview blockquote {
+    @apply mb-6 rounded-lg border-l-[0.25rem] border-orange-900 bg-orange-800 bg-opacity-10 p-6;
+  }
+
+  .markdown-preview > p {
+    @apply mb-5;
+  }
+  .markdown-preview li:not(:last-child) {
+    @apply mb-1;
+  }
+
+  .markdown-preview ul,
+  .markdown-preview ol {
+    @apply mb-5;
+  }
+
+  .markdown-preview ul li::before {
+    content: "";
+    @apply mx-4 inline-block h-1 w-1 rounded-full bg-orange-900 align-middle;
+  }
+
+  .markdown-preview ol {
+    counter-reset: decimal;
+  }
+
+  .markdown-preview ol li {
+    counter-increment: decimal;
+  }
+
+  .markdown-preview ol li::before {
+    content: counter(decimal) ".";
+    @apply mx-4;
+  }
+
+  .markdown-preview pre {
+    @apply rounded-lg bg-cream p-6;
+  }
+
+  .markdown-preview pre:not(:last-child) {
+    @apply mb-6;
+  }
+
+  .markdown-preview pre > code {
+    @apply whitespace-pre-wrap;
+  }
+
+  .markdown-preview a {
+    @apply underline;
+  }
+
+  .markdown-preview blockquote > p {
+    @apply font-bold;
   }
 }

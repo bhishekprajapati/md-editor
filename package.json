@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "markdown-it": "13.0.1",
+    "tailwind-scrollbar": "^3.0.5",
     "vue": "^3.3.4"
   },
   "devDependencies": {

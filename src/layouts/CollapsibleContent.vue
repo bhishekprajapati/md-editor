@@ -9,7 +9,7 @@ const props = defineProps(["isCollapsed"]);
         <slot name="collapsible-content"></slot>
       </div>
     </div>
-    <div class="sticky">
+    <div class="h-screen">
       <slot name="sticky-content"></slot>
     </div>
   </div>
