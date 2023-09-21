@@ -56,7 +56,7 @@
   }
 
   .hamburger {
-    @apply inline-flex h-14 w-14 flex-col items-center justify-center gap-y-1 bg-black-600;
+    @apply inline-flex h-14 w-14 flex-col items-center justify-center gap-y-1 bg-black-600 md:h-[4.5rem] md:w-[4.5rem];
   }
 
   .hamburger > .bar:nth-child(2n + 1) {
