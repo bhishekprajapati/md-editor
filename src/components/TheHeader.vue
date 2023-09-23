@@ -1,6 +1,12 @@
 <script setup>
+import IconSave from "./Icons/IconSave.vue";
+import IconTrash from "./Icons/IconTrash.vue";
 import ButtonPrimary from "./ButtonPrimary.vue";
 import ButtonToggleMenu from "./ButtonToggleMenu.vue";
+import TheMarkdownFilename from "./TheMarkdownFilename.vue";
+import { useMarkdownStore } from "../stores/useMarkdownStore";
+
+const store = useMarkdownStore();
 
 const props = defineProps({
   isMenuCollapsed: {
@@ -20,17 +26,24 @@ const emits = defineEmits(["menuToggle"]);
         :is-active="!props.isMenuCollapsed"
         @click="() => emits('menuToggle')" />
 
-      <img class="mr-4 inline-block" src="/icons/File.svg" alt="file-icon" />
-      <span class="display-m inline-block text-white">welcome.md</span>
+      <TheMarkdownFilename v-if="store.filename" />
 
-      <img
-        class="ml-auto mr-6 inline-block"
-        src="/icons/Trash.svg"
-        alt="file-icon" />
-      <ButtonPrimary class="mr-2 w-10">
+      <button
+        type="button"
+        class="group ml-auto mr-6 inline-block"
+        :disabled="!store.hasChanged">
+        <IconTrash />
+      </button>
+
+      <ButtonPrimary
+        class="mr-2"
+        :disabled="!store.hasChanged"
+        @click="store.save">
         <template v-slot:icon>
-          <img class="inline-block" src="/icons/Save.svg" alt="save-icon" />
+          <IconSave class="mr-2 inline-block align-text-bottom" />
         </template>
+
+        <template v-slot:default>Save Changes</template>
       </ButtonPrimary>
     </div>
   </div>
