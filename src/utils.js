@@ -13,3 +13,14 @@ export function createLocaleDate(
 ) {
   return new Date().toLocaleDateString(locale, options);
 }
+
+export function formatToLocaleDate(
+  date,
+  options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+) {
+  return new Date(date).toLocaleDateString(getLocale(), options);
+}

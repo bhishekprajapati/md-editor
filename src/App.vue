@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import TheHeader from "./components/TheHeader.vue";
 import TheMarkdown from "./components/TheMarkdown.vue";
+import ListMarkdownFiles from "./components/ListMarkdownFiles.vue";
+
 import CollapsibleContent from "./layouts/CollapsibleContent.vue";
 import { useMarkdownStore } from "./stores/useMarkdownStore";
 const isMenuCollapsed = ref(true);
@@ -12,7 +14,11 @@ store.populate();
 
 <template>
   <CollapsibleContent :is-collapsed="isMenuCollapsed">
-    <template v-slot:collapsible-content></template>
+    <template v-slot:collapsible-content>
+      <div class="p-6">
+        <ListMarkdownFiles />
+      </div>
+    </template>
 
     <template v-slot:viewport>
       <TheHeader
