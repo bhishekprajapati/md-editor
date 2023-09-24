@@ -63,14 +63,16 @@ export const useMarkdownStore = defineStore("markdowns", () => {
   async function populate() {
     await refreshFileList();
 
-    if (!fileList.value.length) {
-      filename.value = SAMPLE_MD.filename;
-      fileContent.value = SAMPLE_MD.content;
-      activeFile = new MarkdownFile(SAMPLE_MD.filename, SAMPLE_MD.content);
+    // open last created file
+    if (fileList.value.length) {
+      await openFile(fileList.value[0].filename);
+      return;
     }
 
-    // open last created file
-    await openFile(fileList.value[0].filename);
+    // fallback: open sample markdown file
+    filename.value = SAMPLE_MD.filename;
+    fileContent.value = SAMPLE_MD.content;
+    activeFile = new MarkdownFile(SAMPLE_MD.filename, SAMPLE_MD.content);
   }
 
   return {
