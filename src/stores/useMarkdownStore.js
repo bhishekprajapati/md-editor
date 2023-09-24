@@ -53,6 +53,13 @@ export const useMarkdownStore = defineStore("markdowns", () => {
     );
   }
 
+  async function openFile(name) {
+    const file = await MarkdownFile.findOne(name);
+    filename.value = file.filename;
+    fileContent.value = file.content;
+    activeFile = file;
+  }
+
   async function populate() {
     await refreshFileList();
 
@@ -62,13 +69,8 @@ export const useMarkdownStore = defineStore("markdowns", () => {
       activeFile = new MarkdownFile(SAMPLE_MD.filename, SAMPLE_MD.content);
     }
 
-    // updating refs for loaded file
-    const lastEditedFile = await MarkdownFile.findOne(
-      fileList.value[0].filename,
-    );
-    filename.value = lastEditedFile.filename;
-    fileContent.value = lastEditedFile.content;
-    activeFile = lastEditedFile;
+    // open last created file
+    await openFile(fileList.value[0].filename);
   }
 
   return {
@@ -78,5 +80,6 @@ export const useMarkdownStore = defineStore("markdowns", () => {
     save,
     populate,
     fileList,
+    openFile,
   };
 });
