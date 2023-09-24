@@ -10,7 +10,7 @@ const md = markdownIt("commonmark", {
 </script>
 
 <template>
-  <section class="h-full overflow-y-auto scrollbar-none">
+  <section class="h-full overflow-y-auto scrollbar-none dark:bg-black-900">
     <div
       class="markdown-preview px-5 py-4 md:px-6 md:py-[1.37rem]"
       v-html="md.render(props.code)"></div>

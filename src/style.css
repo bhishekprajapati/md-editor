@@ -87,7 +87,7 @@
   .markdown-preview h4,
   .markdown-preview h5,
   .markdown-preview h6 {
-    @apply mb-[1.25rem] font-preview font-bold text-black-600;
+    @apply mb-[1.25rem] font-preview font-bold text-black-600 dark:text-white;
   }
 
   .markdown-preview h1 {
@@ -115,7 +115,7 @@
   }
 
   .markdown-preview blockquote {
-    @apply mb-6 rounded-lg border-l-[0.25rem] border-orange-900 bg-orange-800 bg-opacity-10 p-6;
+    @apply mb-6 rounded-lg border-l-[0.25rem] border-orange-900 bg-orange-800 bg-opacity-10 p-6 dark:bg-black-700;
   }
 
   .markdown-preview > p {
@@ -149,7 +149,7 @@
   }
 
   .markdown-preview pre {
-    @apply rounded-lg bg-cream p-6;
+    @apply rounded-lg bg-cream p-6 dark:bg-black-700;
   }
 
   .markdown-preview pre:not(:last-child) {
@@ -157,7 +157,7 @@
   }
 
   .markdown-preview pre > code {
-    @apply whitespace-pre-wrap;
+    @apply whitespace-pre-wrap dark:text-white;
   }
 
   .markdown-preview a {
@@ -166,5 +166,11 @@
 
   .markdown-preview blockquote > p {
     @apply font-bold;
+  }
+
+  .markdown-preview p,
+  .markdown-preview li,
+  .markdown-preview blockquote {
+    @apply dark:text-cream;
   }
 }

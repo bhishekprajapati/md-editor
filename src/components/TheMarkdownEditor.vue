@@ -1,6 +1,6 @@
 <template>
   <textarea
     spellcheck="false"
-    class="scrollbar-none h-full w-full resize-none p-4 font-mono focus:outline-none">
+    class="h-full w-full resize-none p-4 font-mono scrollbar-none focus:outline-none dark:bg-black-900 dark:text-grey-700">
   </textarea>
 </template>
