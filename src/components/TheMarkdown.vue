@@ -57,4 +57,8 @@ function togglePreview() {
 #layout.showPreview > :nth-child(2) {
   @apply md:!max-w-0;
 }
+
+#layout.showPreview textarea {
+  @apply hidden;
+}
 </style>
