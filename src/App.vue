@@ -1,6 +1,7 @@
 <script setup>
 import HomeLayout from "./layouts/Home.vue";
 
+import ButtonToggleTheme from "./components/ButtonToggleTheme.vue";
 import TheHeader from "./components/TheHeader.vue";
 import TheMarkdown from "./components/TheMarkdown.vue";
 import ListMarkdownFiles from "./components/ListMarkdownFiles.vue";
@@ -15,6 +16,7 @@ store.populate();
   <HomeLayout>
     <template v-slot:nav>
       <ListMarkdownFiles />
+      <ButtonToggleTheme />
     </template>
 
     <template v-slot:header>

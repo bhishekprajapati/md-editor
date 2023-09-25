@@ -3,7 +3,6 @@ import IconSave from "./Icons/IconSave.vue";
 import IconTrash from "./Icons/IconTrash.vue";
 import ButtonPrimary from "./ButtonPrimary.vue";
 import ButtonToggleMenu from "./ButtonToggleMenu.vue";
-import ButtonToggleTheme from "./ButtonToggleTheme.vue";
 import TheMarkdownFilename from "./TheMarkdownFilename.vue";
 import { useMarkdownStore } from "../stores/useMarkdownStore";
 
@@ -17,21 +16,19 @@ const store = useMarkdownStore();
 
       <TheMarkdownFilename v-if="store.filename" />
 
-      <ButtonToggleTheme class="ml-auto mr-16" />
-
       <button
         type="button"
-        class="group mr-6 inline-block"
+        class="group ml-auto mr-6 inline-block"
         :disabled="!store.hasChanged">
         <IconTrash />
       </button>
 
       <ButtonPrimary
-        class="mr-2"
+        class="mr-2 [&>:last-child]:hidden md:[&>:last-child]:inline-block"
         :disabled="!store.hasChanged"
         @click="store.save">
         <template v-slot:icon>
-          <IconSave class="mr-2 inline-block align-text-bottom" />
+          <IconSave class="inline-block align-text-bottom md:mr-2" />
         </template>
 
         <template v-slot:default>Save Changes</template>
