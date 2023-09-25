@@ -111,7 +111,7 @@
   }
 
   .markdown-preview h6 {
-    @apply text-[0.875rem] text-orange-900;
+    @apply text-[0.875rem] !text-orange-900;
   }
 
   .markdown-preview blockquote {
