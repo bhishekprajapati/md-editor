@@ -8,24 +8,12 @@ import TheMarkdownFilename from "./TheMarkdownFilename.vue";
 import { useMarkdownStore } from "../stores/useMarkdownStore";
 
 const store = useMarkdownStore();
-
-const props = defineProps({
-  isMenuCollapsed: {
-    type: Boolean,
-    default: true,
-  },
-});
-
-const emits = defineEmits(["menuToggle"]);
 </script>
 
 <template>
   <div class="bg-black-700">
     <div class="flex items-center">
-      <ButtonToggleMenu
-        class="mr-6"
-        :is-active="!props.isMenuCollapsed"
-        @click="() => emits('menuToggle')" />
+      <ButtonToggleMenu class="mr-6" />
 
       <TheMarkdownFilename v-if="store.filename" />
 

@@ -1,33 +1,28 @@
 <script setup>
-import { ref } from "vue";
+import HomeLayout from "./layouts/Home.vue";
+
 import TheHeader from "./components/TheHeader.vue";
 import TheMarkdown from "./components/TheMarkdown.vue";
 import ListMarkdownFiles from "./components/ListMarkdownFiles.vue";
 
-import CollapsibleContent from "./layouts/CollapsibleContent.vue";
 import { useMarkdownStore } from "./stores/useMarkdownStore";
-const isMenuCollapsed = ref(true);
 
 const store = useMarkdownStore();
 store.populate();
 </script>
 
 <template>
-  <CollapsibleContent :is-collapsed="isMenuCollapsed">
-    <template v-slot:collapsible-content>
-      <div class="p-6">
-        <ListMarkdownFiles />
-      </div>
+  <HomeLayout>
+    <template v-slot:nav>
+      <ListMarkdownFiles />
     </template>
 
-    <template v-slot:viewport>
-      <TheHeader
-        :is-menu-collapsed="isMenuCollapsed"
-        @menu-toggle="() => (isMenuCollapsed = !isMenuCollapsed)" />
-
-      <main class="h-[calc(100vh-56px)]">
-        <TheMarkdown v-if="store.filename" />
-      </main>
+    <template v-slot:header>
+      <TheHeader />
     </template>
-  </CollapsibleContent>
+
+    <template v-slot:main>
+      <TheMarkdown v-if="store.filename" />
+    </template>
+  </HomeLayout>
 </template>
