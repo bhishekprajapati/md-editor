@@ -37,7 +37,7 @@ function togglePreview() {
       </div>
     </div>
     <div
-      class="h-full transition-transform duration-200 md:flex-1 md:border-l-2 md:border-grey-600 md:dark:border-black-600">
+      class="h-full bg-white transition-transform duration-200 md:flex-1 md:border-l-2 md:border-grey-600 md:dark:border-black-600">
       <div class="relative h-full w-full pt-8">
         <div
           class="display-s absolute left-0 right-0 top-0 bg-cream px-4 py-2 font-medium dark:bg-black-800 dark:text-grey-700">
@@ -49,7 +49,7 @@ function togglePreview() {
   </section>
 </template>
 
-<style scoped>
+<style>
 #layout.showPreview > div:last-child {
   @apply -translate-y-full  md:transform-none;
 }

@@ -87,7 +87,7 @@
   .markdown-preview h4,
   .markdown-preview h5,
   .markdown-preview h6 {
-    @apply mb-[1.25rem] font-preview font-bold text-black-600 dark:text-white;
+    @apply mb-[1.25rem] font-preview font-bold leading-[1.33] text-black-600 dark:text-white;
   }
 
   .markdown-preview h1 {
