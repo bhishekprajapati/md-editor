@@ -28,9 +28,9 @@ function togglePreview() {
       <IconEye class="pointer-events-none" :is-closed="showPreview" />
     </button>
     <div class="h-full md:flex-1">
-      <div class="relative h-full w-full pt-8">
+      <div class="relative h-full w-full bg-cream pt-8 dark:bg-black-900">
         <div
-          class="display-s absolute left-0 right-0 top-0 bg-cream px-4 py-2 font-medium dark:bg-black-800 dark:text-grey-700">
+          class="display-s absolute left-0 right-0 top-0 border-b-2 border-grey-600 px-4 py-2 font-medium leading-relaxed backdrop-blur-3xl dark:border-black-600 dark:text-grey-700">
           MARKDOWN
         </div>
         <TheMarkdownEditor :value="store.fileContent" @input="onEditHandler" />
@@ -38,9 +38,9 @@ function togglePreview() {
     </div>
     <div
       class="h-full bg-white transition-transform duration-200 md:flex-1 md:border-l-2 md:border-grey-600 md:dark:border-black-600">
-      <div class="relative h-full w-full pt-8">
+      <div class="relative h-full w-full bg-cream pt-8 dark:bg-black-900">
         <div
-          class="display-s absolute left-0 right-0 top-0 bg-cream px-4 py-2 font-medium dark:bg-black-800 dark:text-grey-700">
+          class="display-s absolute left-0 right-0 top-0 border-b-2 border-grey-600 px-4 py-2 font-medium leading-relaxed backdrop-blur-3xl dark:border-black-600 dark:text-grey-700">
           PREVIEW
         </div>
         <TheMarkdownPreviewer :code="store.fileContent" />
