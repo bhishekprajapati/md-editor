@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted } from "vue";
 import * as monaco from "monaco-editor";
+import { useThemeStore } from "../stores/useThemeStore";
 import tailwindcssConfig from "../../tailwind.config";
 
+const theme = useThemeStore();
 const emits = defineEmits(["change"]);
-
 const props = defineProps({
   id: {
     type: String,
@@ -30,6 +31,10 @@ onMounted(() => {
   editorModel.onDidChangeContent((e) => {
     emits("change", editorModel.getValue());
   });
+});
+
+theme.$subscribe((_, state) => {
+  monaco.editor.setTheme(state.isDarkMode ? "vs-dark" : "vs");
 });
 </script>
 
