@@ -24,6 +24,7 @@ onMounted(() => {
     language: "markdown",
     fontFamily: tailwindcssConfig.theme.fontFamily?.mono[0],
     fontSize: 16,
+    automaticLayout: true,
   });
 
   const editorModel = monaco.editor.getModels()[0];
