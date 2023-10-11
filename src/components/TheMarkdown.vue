@@ -9,8 +9,8 @@ const showPreview = ref(false);
 const layout = ref(null);
 const store = useMarkdownStore();
 
-function onEditHandler(e) {
-  store.fileContent = e.target.value;
+function onEditHandler(contents) {
+  store.fileContent = contents;
 }
 
 function togglePreview() {
@@ -33,7 +33,10 @@ function togglePreview() {
           class="display-s absolute left-0 right-0 top-0 border-b-2 border-grey-600 px-4 py-2 font-medium leading-relaxed backdrop-blur-3xl dark:border-black-600 dark:text-grey-700">
           MARKDOWN
         </div>
-        <TheMarkdownEditor :value="store.fileContent" @input="onEditHandler" />
+        <TheMarkdownEditor
+          id="editor"
+          :value="store.fileContent"
+          @change="onEditHandler" />
       </div>
     </div>
     <div

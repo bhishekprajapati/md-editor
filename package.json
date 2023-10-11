@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "markdown-it": "13.0.1",
+    "monaco-editor": "^0.44.0",
     "pinia": "^2.1.6",
     "tailwind-scrollbar": "^3.0.5",
     "unstorage": "^1.9.0",

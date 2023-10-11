@@ -1,32 +1,26 @@
 <script setup>
-import { watch, ref, onBeforeMount } from "vue";
+import { onBeforeMount } from "vue";
+import { useThemeStore } from "../stores/useThemeStore";
 import IconSun from "./Icons/IconSun.vue";
 import IconMoon from "./Icons/IconMoon.vue";
 
-const isDarkMode = ref(false);
-
-watch(isDarkMode, (curr, _) => {
-  if (curr) {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-    return;
-  }
-
-  document.documentElement.classList.remove("dark");
-  localStorage.setItem("theme", "light");
-});
+const store = useThemeStore();
 
 onBeforeMount(() => {
   const pref = localStorage.getItem("theme");
-  if (pref && pref === "light") isDarkMode.value = false;
-  else isDarkMode.value = true;
+  if (pref && pref === "light") {
+    store.setLightMode();
+    return;
+  }
+
+  store.setDarkMode();
 });
 </script>
 
 <template>
   <span class="inline-block">
     <input
-      v-model="isDarkMode"
+      v-model="store.isDarkMode"
       id="theme-toggler"
       type="checkbox"
       class="fixed -translate-x-[200vw] opacity-0 [&:checked+svg]:!fill-grey-900 [&:checked~label_span]:translate-x-6 [&:checked~svg:last-of-type]:!fill-white" />
