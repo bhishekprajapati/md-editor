@@ -38,6 +38,9 @@ onMounted(() => {
 </template>
 
 <style>
+html.dark .monaco-editor {
+  --vscode-editor-background: #151619;
+}
 .monaco-editor .view-lines {
   padding-left: 0.5rem !important;
 }
