@@ -17,10 +17,14 @@ const props = defineProps({
   },
 });
 
+function getEditorTheme() {
+  return theme.getTheme() === "dark" ? "vs-dark" : "vs";
+}
+
 onMounted(() => {
   monaco.editor.create(document.getElementById(props.id), {
     value: props.value,
-    theme: "vs-dark",
+    theme: getEditorTheme(),
     language: "markdown",
     fontFamily: tailwindcssConfig.theme.fontFamily?.mono[0],
     fontSize: 16,
@@ -34,8 +38,8 @@ onMounted(() => {
   });
 });
 
-theme.$subscribe((_, state) => {
-  monaco.editor.setTheme(state.isDarkMode ? "vs-dark" : "vs");
+theme.$subscribe(() => {
+  monaco.editor.setTheme(getEditorTheme());
 });
 </script>
 
