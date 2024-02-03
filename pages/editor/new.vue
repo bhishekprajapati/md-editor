@@ -1,0 +1,3 @@
+<template>
+  <TheFile />
+</template>

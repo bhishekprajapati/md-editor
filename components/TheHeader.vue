@@ -8,8 +8,10 @@ const isOpen = ref(false);
       <UIcon name="i-heroicons-bars-3" />
     </UButton>
     <span class="font-bold uppercase">markdown</span>
-    <USlideover v-model="isOpen" :overlay="false" side="left" class="w-[15%]">
-    </USlideover>
+    <ClientOnly>
+      <UserAuthState class="ml-auto" />
+    </ClientOnly>
+    <USlideover v-model="isOpen" side="left" class="w-[15%]"> </USlideover>
   </div>
   <UDivider />
 </template>

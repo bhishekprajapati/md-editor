@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/google-fonts", "@nuxt/ui"],
+  modules: ["@nuxtjs/supabase", "@nuxtjs/google-fonts", "@nuxt/ui"],
   googleFonts: {
     families: {
       Roboto: [300, 400],
@@ -20,5 +20,8 @@ export default defineNuxtConfig({
       primary: "green",
       gray: "cool",
     },
+  },
+  supabase: {
+    redirect: false,
   },
 });
