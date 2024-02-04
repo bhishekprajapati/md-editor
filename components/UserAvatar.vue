@@ -19,6 +19,11 @@ async function signOut() {
 const items = [
   [
     {
+      label: "Files",
+      icon: "i-heroicons-document-text",
+      click: () => router.push("/files"),
+    },
+    {
       label: "Sign out",
       labelClass: "text-red-500",
       icon: "i-heroicons-arrow-right-start-on-rectangle",
