@@ -24,7 +24,7 @@ const isOpen = ref(false);
         <ButtonSaveFile v-if="store.file" />
         <ButtonDeleteFile v-if="store.file" class="mr-8" />
         <ButtonThemeToggle />
-        <UserAuthState class="hidden" />
+        <UserAuthState class="hidden md:block" />
       </div>
     </ClientOnly>
     <USlideover v-model="isOpen" side="left" class="w-[15%]"> </USlideover>
