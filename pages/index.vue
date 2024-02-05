@@ -7,7 +7,7 @@ const user = useSupabaseUser();
     <UContainer class="gap-16 sm:gap-y-24">
       <div class="text-center">
         <h1
-          class="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-5xl font-bold capitalize tracking-tight text-transparent sm:text-7xl">
+          class="animate-text-gradient bg-gradient-to-r from-orange-600 via-orange-400 to-yellow-400 bg-clip-text text-5xl font-bold capitalize tracking-tight text-transparent sm:text-7xl">
           Markdown editor with real-time collaborative experience!
         </h1>
 
