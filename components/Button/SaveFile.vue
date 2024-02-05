@@ -4,16 +4,14 @@ import moment from "moment";
 const user = useSupabaseUser();
 const store = useFileStore();
 
-const openSignInModal = inject("openSignInModal");
-
 async function handleClick() {
-  user.value ? store.onSave() : openSignInModal;
+  store.onSave();
 }
 </script>
 
 <template>
   <div class="flex items-center justify-center gap-x-4">
-    <UBadge color="white" variant="solid">
+    <UBadge v-if="store.file?.updatedAt" color="white" variant="solid">
       Updated {{ moment(store.file?.updatedAt).fromNow() }}
     </UBadge>
 

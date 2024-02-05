@@ -20,12 +20,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  appConfig: {
-    ui: {
-      primary: "green",
-      gray: "cool",
-    },
-  },
   supabase: {
     redirect: false,
   },

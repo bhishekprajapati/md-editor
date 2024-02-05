@@ -10,10 +10,7 @@ export const useFileStore = defineStore("file", () => {
 
   // create a new local file
   async function onNew() {
-    if (file.value) {
-      return console.warn(file.value);
-    }
-
+    console.log("open new file");
     file.value = {
       name: "Readme",
       content: sampleMd,
@@ -87,9 +84,9 @@ export const useFileStore = defineStore("file", () => {
     }
   }
 
-  // function setFilename(name) {
-
-  // }
+  function setFilename(name) {
+    file.value.name = name;
+  }
 
   function getIsNew() {
     return file.value?.id;
@@ -112,6 +109,7 @@ export const useFileStore = defineStore("file", () => {
     onOpen,
     onSave,
     onDelete,
+    setFilename,
     $reset,
   };
 });

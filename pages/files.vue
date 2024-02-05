@@ -1,5 +1,5 @@
 <script setup>
-const { pending, data: files } = await useFiles();
+const { pending, data: files } = await useFetch("/api/files");
 </script>
 
 <template>

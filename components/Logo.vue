@@ -47,6 +47,6 @@ const colorMode = useColorMode();
       </g>
     </svg>
 
-    <UBadge variant="outline" size="xs" color="orange">editor</UBadge>
+    <UBadge variant="outline" size="xs">Editor</UBadge>
   </div>
 </template>
