@@ -18,11 +18,10 @@ const isOpen = ref(false);
     <Logo class="mr-12" />
 
     <ClientOnly>
-      <Filename class="mr-auto" />
+      <Filename class="mr-auto" :key="route.path" />
 
       <div class="ml-auto flex items-center gap-x-4">
         <ButtonSaveFile v-if="store.file" />
-        <ButtonDeleteFile v-if="store.file" class="mr-8" />
         <ButtonThemeToggle />
         <UserAuthState class="hidden md:block" />
       </div>

@@ -4,8 +4,12 @@ const { pending, data: files } = await useFetch("/api/files");
 
 <template>
   <section v-if="!pending" class="p-16">
-    <header class="mb-12 text-right">
-      <UButton icon="i-heroicons-plus">New File</UButton>
+    <header class="mb-12">
+      <ULink
+        to="/editor/new"
+        class="bg-primary inline-flex items-center gap-x-2 rounded-full px-4 py-3 text-slate-950 shadow-xl">
+        <UIcon name="i-heroicons-plus" /> New File
+      </ULink>
     </header>
     <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <FileCard v-for="file in files" :key="file.id" :data="file" />

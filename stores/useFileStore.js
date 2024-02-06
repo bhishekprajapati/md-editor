@@ -5,12 +5,12 @@ export const useFileStore = defineStore("file", () => {
   const isDeleting = ref(false);
   const isLoading = ref(false); // `true` when loading file
   const isSaving = ref(false); // `true` when saving file
+  const isSyncingFilename = ref(false);
 
   const toast = useToast();
 
   // create a new local file
   async function onNew() {
-    console.log("open new file");
     file.value = {
       name: "Readme",
       content: sampleMd,
@@ -84,12 +84,34 @@ export const useFileStore = defineStore("file", () => {
     }
   }
 
-  function setFilename(name) {
-    file.value.name = name;
+  async function onSaveFilename(name, callback) {
+    if (!getIsNew()) {
+      isSyncingFilename.value = true;
+      let error;
+      try {
+        const data = await $fetch("/api/file", {
+          method: "PATCH",
+          body: {
+            id: file.value.id,
+            name,
+          },
+        });
+        file.value = {
+          ...file.value,
+          name: data.name,
+          updatedAt: data.updatedAt,
+        };
+      } catch (err) {
+        error = err;
+      } finally {
+        isSyncingFilename.value = false;
+        callback(error);
+      }
+    }
   }
 
   function getIsNew() {
-    return file.value?.id;
+    return !file.value?.id;
   }
 
   function $reset() {
@@ -104,12 +126,13 @@ export const useFileStore = defineStore("file", () => {
     isSaving,
     isLoading,
     isDeleting,
+    isSyncingFilename,
     getIsNew,
     onNew,
     onOpen,
     onSave,
+    onSaveFilename,
     onDelete,
-    setFilename,
     $reset,
   };
 });
