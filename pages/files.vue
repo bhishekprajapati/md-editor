@@ -1,5 +1,9 @@
 <script setup>
 const { pending, data: files } = await useFetch("/api/files");
+
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>
 
 <template>

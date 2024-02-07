@@ -41,17 +41,6 @@ async function onSubmit(e) {
 
   isLoading.value = false;
 }
-
-definePageMeta({
-  middleware: [
-    function () {
-      const user = useSupabaseUser();
-      if (user.value) {
-        return navigateTo("/");
-      }
-    },
-  ],
-});
 </script>
 
 <template>
