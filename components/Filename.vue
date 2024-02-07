@@ -63,11 +63,14 @@ async function syncFilename() {
       @blur="syncFilename"
       @keyup.enter="syncFilename"
       autofocus />
-    <span
+    <UButton
       v-else
+      variant="ghost"
+      icon="i-heroicons-pencil-square"
+      color="white"
       @click="isEditing = true"
       :class="{ 'animate-pulse': store.isSyncingFilename }">
       {{ `${store.file.name}.md` }}
-    </span>
+    </UButton>
   </div>
 </template>
