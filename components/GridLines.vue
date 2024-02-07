@@ -4,7 +4,7 @@
 
 <style>
 .grid-lines {
-  --color: rgb(216, 216, 216);
+  --color: rgb(229, 229, 229);
   --length: 4rem;
 
   background-image: linear-gradient(to right, var(--color) 1px, transparent 1px),
@@ -15,7 +15,7 @@
 }
 
 .dark .grid-lines {
-  --color: #373e4a;
+  --color: #20252e;
 }
 
 @media screen and (min-width: 48em) {
