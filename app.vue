@@ -21,7 +21,10 @@ useHead({
       <Header v-else />
     </header>
     <main
-      :class="{ 'h-[calc(100dvh-4rem)]': !isIndexPath, 'mt-16': isIndexPath }">
+      :class="{
+        'h-[calc(100dvh-4rem)] bg-gray-50 dark:bg-slate-900': !isIndexPath,
+        'mt-16': isIndexPath,
+      }">
       <div class="relative" v-if="isIndexPath">
         <GridLines />
         <UContainer>
