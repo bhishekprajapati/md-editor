@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) =>
       }
 
       // if restricted access then check
-      const haveAccess = await prisma.sharedFile.findUniqueOrThrow({
+      const haveAccess = await prisma.sharedFile.findFirst({
         where: {
           fileId,
           userId: user.id,

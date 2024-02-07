@@ -62,11 +62,13 @@ async function syncFilename() {
       v-model="filename"
       @blur="syncFilename"
       @keyup.enter="syncFilename"
+      :disabled="store.isSharedFile"
       autofocus />
     <UButton
       v-else
       variant="ghost"
-      icon="i-heroicons-pencil-square"
+      :icon="store.isSharedFile ? '' : 'i-heroicons-pencil-square'"
+      :disabled="store.isSharedFile"
       color="white"
       @click="isEditing = true"
       :class="{ 'animate-pulse': store.isSyncingFilename }">

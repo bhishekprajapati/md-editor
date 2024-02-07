@@ -12,6 +12,20 @@ export default defineEventHandler(async (event) =>
   authProtected(event, async (user) => {
     const { id, ...data } = await fileSchema.parseAsync(await readBody(event));
     const prisma = getPrismaInstance();
+    const file = await prisma.file.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    // if not a file owner
+    if (file.userId !== user.id) {
+      return setResponseStatus(event, 403);
+    }
+
     return await prisma.file.update({
       where: {
         id,

@@ -1,11 +1,16 @@
 import sampleMd from "~/sample-md";
 
 export const useFileStore = defineStore("file", () => {
+  const route = useRoute();
+
+  const error = ref(null);
   const file = ref(null);
   const isDeleting = ref(false);
   const isLoading = ref(false); // `true` when loading file
   const isSaving = ref(false); // `true` when saving file
   const isSyncingFilename = ref(false);
+  const isUpdatingVisibility = ref(false);
+  const isSharedFile = computed(() => Object.hasOwn(route.query, "shared"));
 
   const toast = useToast();
 
@@ -25,14 +30,15 @@ export const useFileStore = defineStore("file", () => {
 
     try {
       isLoading.value = true;
-      const data = await $fetch("/api/file", {
+      const url = route.query?.shared ? "/api/file?shared=true" : "/api/file";
+      const data = await $fetch(url, {
         query: {
           id,
         },
       });
       file.value = data;
     } catch (err) {
-      console.error(err);
+      error.value = err;
     } finally {
       isLoading.value = false;
     }
@@ -110,8 +116,38 @@ export const useFileStore = defineStore("file", () => {
     }
   }
 
+  async function updateVisibility(value, callback) {
+    if (!getIsNew()) {
+      isUpdatingVisibility.value = true;
+      let error;
+      try {
+        const data = await $fetch("/api/file", {
+          method: "PATCH",
+          body: {
+            id: file.value.id,
+            private: !!value,
+          },
+        });
+        file.value = {
+          ...file.value,
+          private: data.private,
+          updatedAt: data.updatedAt,
+        };
+      } catch (err) {
+        error = err;
+      } finally {
+        isUpdatingVisibility.value = false;
+        callback(error);
+      }
+    }
+  }
+
   function getIsNew() {
     return !file.value?.id;
+  }
+
+  function clearError() {
+    error.value = null;
   }
 
   function $reset() {
@@ -122,17 +158,22 @@ export const useFileStore = defineStore("file", () => {
   }
 
   return {
+    error,
     file,
     isSaving,
     isLoading,
     isDeleting,
     isSyncingFilename,
+    isUpdatingVisibility,
+    isSharedFile,
     getIsNew,
     onNew,
     onOpen,
     onSave,
     onSaveFilename,
     onDelete,
+    updateVisibility,
+    clearError,
     $reset,
   };
 });

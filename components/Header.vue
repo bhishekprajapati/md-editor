@@ -21,7 +21,9 @@ const isOpen = ref(false);
       <Filename class="mr-auto" :key="route.path" />
 
       <div class="ml-auto flex items-center gap-x-4">
-        <ButtonSaveFile v-if="store.file" />
+        <ButtonSaveFile v-if="store.file && !store.isSharedFile" />
+        <ButtonShare
+          v-if="store.file && !store.getIsNew() && !store.isSharedFile" />
         <ButtonThemeToggle />
         <UserAuthState class="hidden md:block" />
       </div>
