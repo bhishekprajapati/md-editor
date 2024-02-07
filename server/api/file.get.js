@@ -6,8 +6,8 @@ const schema = z.string().trim().uuid();
 export default defineEventHandler(async (event) =>
   authProtected(event, async (user) => {
     // file id validation
-    const fileId = schema.safeParse(getQuery(event)?.id);
-    if (!fileId.success) {
+    const { data: fileId, success } = schema.safeParse(getQuery(event)?.id);
+    if (!success) {
       return setResponseStatus(event, 400);
     }
 
