@@ -1,3 +1,3 @@
 export default defineEventHandler(async (event) => {
-  return event.context.user;
+  return authProtected(event, () => event.context.user);
 });
