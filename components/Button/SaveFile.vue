@@ -1,6 +1,4 @@
 <script setup>
-import moment from "moment";
-
 const user = useSupabaseUser();
 const store = useFileStore();
 const updatedAt = ref(store.file?.updatedAt ?? "");
@@ -14,9 +12,7 @@ async function handleClick() {
 
 <template>
   <div class="flex items-center justify-center gap-x-4">
-    <UBadge v-if="updatedAt" color="white" variant="solid">
-      Updated {{ moment(updatedAt).fromNow() }}
-    </UBadge>
+    <MomentFromNow prefix="Updated" :iso-string="updatedAt" />
 
     <UButton
       icon="i-heroicons-cloud-arrow-up"
