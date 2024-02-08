@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getPrismaInstance } from "~/lib/prisma";
 
 const payloadSchema = z.object({
-  content: z.string().trim().max(2000),
+  content: z.string().trim().max(10000),
 });
 
 export default defineEventHandler(async (event) =>

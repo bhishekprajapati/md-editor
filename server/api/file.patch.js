@@ -5,7 +5,7 @@ const fileSchema = z.object({
   id: z.string().trim().uuid(),
   private: z.boolean().optional(),
   name: z.string().trim().min(8).max(25).optional(),
-  content: z.string().trim().max(2000).optional(),
+  content: z.string().trim().max(10000).optional(),
 });
 
 export default defineEventHandler(async (event) =>
