@@ -28,7 +28,7 @@ definePageMeta({
       <header class="mb-12">
         <ULink
           to="/editor/new"
-          class="bg-primary inline-flex items-center gap-x-2 rounded-full px-4 py-3 text-slate-950 shadow-xl">
+          class="inline-flex items-center gap-x-2 rounded-full bg-blue-200 px-4 py-3 text-slate-950 shadow">
           <UIcon name="i-heroicons-plus" /> New File
         </ULink>
       </header>
