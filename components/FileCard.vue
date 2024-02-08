@@ -14,12 +14,16 @@ const props = defineProps(["data"]);
         <ClientOnly>
           <ul>
             <li class="mb-2">
-              <UIcon name="i-heroicons-calendar-days" class="mr-4" />Created at
+              <UIcon
+                name="i-heroicons-calendar-days"
+                class="mr-4 align-middle" />Created at
               {{ moment(props.data.createdAt).format("DD MMMM YYYY") }}
             </li>
             <li class="mb-2">
-              <UIcon name="i-heroicons-arrow-path" class="mr-4" />Last modified
-              {{ moment(props.data.updatedAt).fromNow() }}
+              <UIcon name="i-heroicons-arrow-path" class="mr-4 align-middle" />
+              <MomentFromNow
+                prefix="Last modified"
+                :iso-string="props.data.updatedAt" />
             </li>
           </ul>
         </ClientOnly>
