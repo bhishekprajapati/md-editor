@@ -1,12 +1,25 @@
 <script setup>
+import copy from "copy-to-clipboard";
 import markdownIt from "markdown-it";
+import Shiki from "@shikijs/markdown-it";
+
+const toast = useToast();
 
 const md = markdownIt("commonmark", {
-  html: true,
-  xhtmlOut: true,
+  html: false,
+  xhtmlOut: false,
   linkify: true,
   typographer: true,
 });
+
+md.use(
+  await Shiki({
+    themes: {
+      light: "github-light",
+      dark: "night-owl",
+    },
+  }).catch((err) => console.error(err)),
+);
 
 const props = defineProps({
   code: {
@@ -14,166 +27,65 @@ const props = defineProps({
     default: "",
   },
 });
+
+const markdownContainer = ref(null);
+const html = computed(() => md.render(props.code));
+const preList = ref([]);
+const observer = ref(null);
+
+onMounted(() => {
+  const el = markdownContainer.value;
+  if (el) {
+    observer.value = new MutationObserver(() => {
+      const pres = el.querySelectorAll("pre.shiki");
+      pres &&
+        (preList.value = Array.from(
+          { length: pres.length },
+          (_, idx) => idx + 1,
+        ));
+    });
+    observer.value.observe(el, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    // to attach buttons on initial load
+    el.removeAttribute("data-trigger");
+  }
+});
+
+onUnmounted(() => {
+  observer.value?.disconnect();
+});
+
+function handleCopy(selector) {
+  const el = document.querySelector(selector);
+  try {
+    copy(el.textContent);
+    toast.add({ title: "Copied!", color: "orange" });
+  } catch (err) {
+    toast.add({ title: "Somethin went wrong!", color: "red" });
+  }
+}
 </script>
 
 <template>
   <div
+    ref="markdownContainer"
     class="markdown px-5 py-4 md:px-6 md:py-[1.37rem]"
-    v-html="md.render(props.code)"></div>
+    v-html="html"
+    data-trigger></div>
+
+  <div v-if="preList.length">
+    <div v-for="num of preList" :key="preList.length">
+      <Teleport :to="`.markdown > pre:nth-of-type(${num})`" key="num">
+        <UButton
+          class="absolute right-0 top-0 m-4"
+          color="gray"
+          icon="i-heroicons-clipboard"
+          @click="() => handleCopy(`.markdown > pre:nth-of-type(${num})`)" />
+      </Teleport>
+    </div>
+  </div>
 </template>
-
-<style>
-.markdown h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h2 {
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h4 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h5 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h6 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.markdown p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-.markdown a {
-  color: var(--color-primary-DEFAULT);
-  text-decoration: none;
-}
-
-.markdown a:hover {
-  color: #3182ce;
-  text-decoration: none;
-}
-
-.markdown blockquote {
-  border-color: #e2e8f0;
-  border-left-width: 4px;
-  font-weight: 400;
-  font-style: italic;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  padding-left: 1.5rem;
-  color: #2d3748;
-  font-size: 1.125rem;
-}
-
-.markdown code {
-  background-color: #e2e8f0;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-}
-
-.markdown hr {
-  border-bottom-width: 1px;
-  border-color: #e2e8f0;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  border-radius: 9999px;
-}
-
-.markdown ul {
-  list-style-type: disc;
-  list-style-position: inside;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.markdown ol {
-  list-style-type: decimal;
-  list-style-position: inside;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.markdown table {
-  width: 100%;
-  color: #1a202c;
-  margin-bottom: 1rem;
-  padding: 0;
-  border-collapse: collapse;
-}
-
-.markdown table tr {
-  border-top-width: 1px;
-  border-color: #4a5568;
-  background-color: #fff;
-  margin: 0;
-  padding: 0;
-}
-
-.markdown table tr:nth-child(2n) {
-  background-color: #f7fafc;
-}
-
-.markdown table tr th {
-  font-weight: 700;
-  border-width: 1px;
-  border-color: #4a5568;
-  text-align: left;
-  margin: 0;
-  padding: 6px 13px;
-}
-
-.markdown table tr th:first-child {
-  margin-top: 0;
-}
-
-.markdown table tr th:last-child {
-  margin-bottom: 0;
-}
-
-.markdown table tr td {
-  border-width: 1px;
-  border-color: #4a5568;
-  text-align: left;
-  margin: 0;
-  padding: 6px 13px;
-}
-
-.markdown table tr td:first-child {
-  margin-top: 0;
-}
-
-.markdown table tr td:last-child {
-  margin-bottom: 0;
-}
-</style>
