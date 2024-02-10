@@ -16,7 +16,7 @@ const props = defineProps({
   },
 });
 
-const datetime = ref(props.isoString);
+const datetime = computed(() => props.isoString);
 const refreshKey = ref(Date.now());
 const timerId = ref(null);
 
