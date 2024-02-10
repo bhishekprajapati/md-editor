@@ -8,14 +8,18 @@ export const useFileStore = defineStore("file", () => {
   const file = ref(null);
   const isDeleting = ref(false);
   const isLoading = ref(false); // `true` when loading file
-  const isSaving = ref(false); // `true` when saving file
   const isUpdatingVisibility = ref(false);
   const isSharedFile = computed(() => Object.hasOwn(route.query, "shared"));
 
-  const toast = useToast();
-
   async function setFilename(name) {
     file.value.name = await filenameSchema.parseAsync(name);
+  }
+
+  async function create() {
+    return await $fetch("/api/file", {
+      method: "POST",
+      body: file.value,
+    });
   }
 
   async function patchFile(payload) {
@@ -34,7 +38,7 @@ export const useFileStore = defineStore("file", () => {
   // create a new local file
   async function onNew() {
     file.value = {
-      name: "Readme",
+      name: "SampleMarkdown",
       content: sampleMd,
     };
   }
@@ -58,34 +62,6 @@ export const useFileStore = defineStore("file", () => {
       error.value = err;
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  // saveFile
-  async function onSave() {
-    isSaving.value = true;
-    try {
-      if (!file.value?.id) {
-        // post a new file
-        await $fetch("/api/file", {
-          method: "POST",
-          body: file.value,
-        });
-
-        return;
-      }
-
-      const data = await $fetch("/api/file", {
-        method: "PATCH",
-        body: file.value,
-      });
-      file.value = data;
-      toast.add({ title: "Saved!" });
-    } catch (err) {
-      console.error(err);
-      toast.add({ color: "red", title: "Failed to save!" });
-    } finally {
-      isSaving.value = false;
     }
   }
 
@@ -145,13 +121,11 @@ export const useFileStore = defineStore("file", () => {
     file.value = null;
     isDeleting.value = false;
     isLoading.value = false;
-    isSaving.value = false;
   }
 
   return {
     error,
     file,
-    isSaving,
     isLoading,
     isDeleting,
     isUpdatingVisibility,
@@ -159,10 +133,10 @@ export const useFileStore = defineStore("file", () => {
     getIsNew,
     onNew,
     onOpen,
-    onSave,
     onDelete,
     updateVisibility,
     setFilename,
+    create,
     patchFile,
     clearError,
     $reset,

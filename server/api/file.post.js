@@ -1,41 +1,21 @@
-import { z } from "zod";
 import { getPrismaInstance } from "~/lib/prisma";
-
-const payloadSchema = z.object({
-  content: z.string().trim().max(10000),
-});
+import { fileCreationSchema } from "~/utils/validators";
 
 export default defineEventHandler(async (event) =>
   authProtected(event, async (user) => {
-    const payload = payloadSchema.safeParse(await readBody(event));
+    const payload = fileCreationSchema.safeParse(await readBody(event));
 
     if (!payload.success) {
-      return setResponseStatus(event, 400, `Invalid payload!`);
+      return setResponseStatus(event, 400);
     }
 
     const prisma = getPrismaInstance();
 
-    const record = await prisma.user.upsert({
-      where: {
-        id: user.id,
-      },
-      create: {
-        id: user.id,
-        files: {
-          create: {
-            content: payload.data.content,
-          },
-        },
-      },
-      update: {
-        files: {
-          create: {
-            content: payload.data.content,
-          },
-        },
+    return await prisma.file.create({
+      data: {
+        userId: user.id,
+        ...payload.data,
       },
     });
-
-    return setResponseStatus(event, 200, "File saved!");
   }),
 );

@@ -11,7 +11,6 @@ export const filePatchSchema = z.object({
 });
 
 export const fileCreationSchema = z.object({
-  id: z.string().trim().uuid(),
   private: z.boolean().optional(),
   name: filenameSchema,
   content: fileContentSchema.default(""),
