@@ -1,16 +1,11 @@
-import { ZodError, z } from "zod";
 import { getPrismaInstance } from "~/lib/prisma";
-
-const fileSchema = z.object({
-  id: z.string().trim().uuid(),
-  private: z.boolean().optional(),
-  name: z.string().trim().min(8).max(25).optional(),
-  content: z.string().trim().max(10000).optional(),
-});
+import { filePatchSchema } from "~/utils/validators";
 
 export default defineEventHandler(async (event) =>
   authProtected(event, async (user) => {
-    const { id, ...data } = await fileSchema.parseAsync(await readBody(event));
+    const { id, ...data } = await filePatchSchema.parseAsync(
+      await readBody(event),
+    );
     const prisma = getPrismaInstance();
     const file = await prisma.file.findUniqueOrThrow({
       where: {
@@ -32,6 +27,14 @@ export default defineEventHandler(async (event) =>
         userId: user.id,
       },
       data,
+      // only return the mutated fields
+      select: {
+        id: true,
+        name: !!data?.name,
+        private: !!data?.private,
+        content: !!data?.content,
+        updatedAt: true,
+      },
     });
   }),
 );

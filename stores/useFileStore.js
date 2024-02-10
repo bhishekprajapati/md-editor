@@ -1,4 +1,5 @@
 import sampleMd from "~/sample-md";
+import { filenameSchema } from "~/utils/validators";
 
 export const useFileStore = defineStore("file", () => {
   const route = useRoute();
@@ -8,11 +9,27 @@ export const useFileStore = defineStore("file", () => {
   const isDeleting = ref(false);
   const isLoading = ref(false); // `true` when loading file
   const isSaving = ref(false); // `true` when saving file
-  const isSyncingFilename = ref(false);
   const isUpdatingVisibility = ref(false);
   const isSharedFile = computed(() => Object.hasOwn(route.query, "shared"));
 
   const toast = useToast();
+
+  async function setFilename(name) {
+    file.value.name = await filenameSchema.parseAsync(name);
+  }
+
+  async function patchFile(payload) {
+    payload["id"] = file.value.id;
+    const data = await filePatchSchema.parseAsync(payload);
+    const updates = await $fetch("/api/file", {
+      method: "PATCH",
+      body: data,
+    });
+    file.value = {
+      ...file.value,
+      ...updates,
+    };
+  }
 
   // create a new local file
   async function onNew() {
@@ -90,32 +107,6 @@ export const useFileStore = defineStore("file", () => {
     }
   }
 
-  async function onSaveFilename(name, callback) {
-    if (!getIsNew()) {
-      isSyncingFilename.value = true;
-      let error;
-      try {
-        const data = await $fetch("/api/file", {
-          method: "PATCH",
-          body: {
-            id: file.value.id,
-            name,
-          },
-        });
-        file.value = {
-          ...file.value,
-          name: data.name,
-          updatedAt: data.updatedAt,
-        };
-      } catch (err) {
-        error = err;
-      } finally {
-        isSyncingFilename.value = false;
-        callback(error);
-      }
-    }
-  }
-
   async function updateVisibility(value, callback) {
     if (!getIsNew()) {
       isUpdatingVisibility.value = true;
@@ -163,16 +154,16 @@ export const useFileStore = defineStore("file", () => {
     isSaving,
     isLoading,
     isDeleting,
-    isSyncingFilename,
     isUpdatingVisibility,
     isSharedFile,
     getIsNew,
     onNew,
     onOpen,
     onSave,
-    onSaveFilename,
     onDelete,
     updateVisibility,
+    setFilename,
+    patchFile,
     clearError,
     $reset,
   };
