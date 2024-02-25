@@ -7,6 +7,8 @@ useHead({
     lang: "en",
   },
 });
+const { $api, $ref } = useNuxtApp();
+console.log($ref);
 </script>
 
 <template>

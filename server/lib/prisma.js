@@ -5,10 +5,10 @@ let instance;
 /**
  * @returns {PrismaClient}
  */
-export function getPrismaInstance() {
+export const prisma = (function () {
   if (instance) {
     return instance;
   }
 
   return (instance = new PrismaClient());
-}
+})();
