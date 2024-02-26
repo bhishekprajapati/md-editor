@@ -1,8 +1,11 @@
 import type { EventHandler } from "h3";
+
 import { prisma } from "~/server/lib/prisma";
-import { DataResponse } from "~/server/utils/api";
+import { dataResponse } from "~/server/utils/api";
 import { fileCreationSchema } from "~/utils/validators";
 import { filePatchSchema } from "~/utils/validators";
+import defineSafeEventHandler from "~/server/utils/handler";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 const GET: EventHandler = async (event) => {
   try {
@@ -18,7 +21,7 @@ const GET: EventHandler = async (event) => {
       const file = await prisma.file.findUniqueOrThrow({
         where: { id, userId: user.id },
       });
-      return sendData(file);
+      return dataResponse(file);
     }
 
     if (access === "public") {
@@ -29,10 +32,13 @@ const GET: EventHandler = async (event) => {
       });
 
       if (file.private) {
-        return apiErrors.ForbiddenError(event);
+        throw createError({
+          statusCode: StatusCodes.FORBIDDEN,
+          statusMessage: getReasonPhrase(StatusCodes.FORBIDDEN),
+        });
       }
 
-      return sendData(file);
+      return dataResponse(file);
     }
 
     if (access === "invited") {
@@ -43,12 +49,12 @@ const GET: EventHandler = async (event) => {
         },
       });
 
-      return sendData(file);
+      return dataResponse(file);
     }
   } catch (err) {
-    console.err(err);
-    return apiErrors.NotFoundError(event, {
-      message: "File not found",
+    throw createError({
+      statusCode: StatusCodes.NOT_FOUND,
+      statusMessage: "File not found.",
     });
   }
 };
@@ -61,7 +67,7 @@ const GETALL: EventHandler = async (event) => {
     },
   });
 
-  return sendData(files);
+  return dataResponse(files);
 };
 
 const POST: EventHandler = async (event) => {
@@ -74,7 +80,7 @@ const POST: EventHandler = async (event) => {
     },
   });
 
-  return sendData(file);
+  return dataResponse(file);
 };
 
 const PATCH: EventHandler = async (event) => {
@@ -90,7 +96,10 @@ const PATCH: EventHandler = async (event) => {
   });
 
   if (!file) {
-    return apiErrors.NotFoundError(event, { message: "File not found" });
+    throw createError({
+      statusCode: StatusCodes.NOT_FOUND,
+      statusMessage: "File not found.",
+    });
   }
 
   const updatedFile = await prisma.file.update({
@@ -109,7 +118,7 @@ const PATCH: EventHandler = async (event) => {
     },
   });
 
-  return sendData(updatedFile);
+  return dataResponse(updatedFile);
 };
 
 const DELETE: EventHandler = async (event) => {
@@ -123,10 +132,10 @@ const DELETE: EventHandler = async (event) => {
     },
   });
 
-  return DataResponse(deletedFile);
+  return dataResponse(deletedFile);
 };
 
-export default defineEventHandler(async (event) => {
+export default defineSafeEventHandler(async (event) => {
   switch (event.method) {
     case "GET":
       return getRouterParams(event)?.id

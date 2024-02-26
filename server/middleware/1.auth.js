@@ -1,4 +1,5 @@
 import { serverSupabaseUser } from "#supabase/server";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 if (process.env.NODE_ENV === "development") {
   console.info("👉 Server Middleware: `Auth` registered");
@@ -16,9 +17,10 @@ export default defineEventHandler(async (event) => {
       sendError(
         event,
         createError({
-          statusCode: "401",
-          statusText: "Unauthorized",
+          statusCode: StatusCodes.UNAUTHORIZED,
+          statusText: getReasonPhrase(StatusCodes.UNAUTHORIZED),
         }),
+        process.env.NODE_ENV !== "production",
       );
     }
   }

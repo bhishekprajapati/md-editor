@@ -1,7 +1,8 @@
 import type { $Fetch, NitroFetchOptions, NitroFetchRequest } from "nitropack";
-import type { DataResponse, ErrorResponse } from "~/server/api/types";
+import type { H3Error } from "h3";
+import type { DataResponse } from "~/server/utils/api";
 
-type ServerResponse<D = any> = DataResponse<D> | ErrorResponse;
+type ServerResponse<D = any> = DataResponse<D> | H3Error;
 type Options<T extends "get" | "post" | "patch" | "delete"> = NitroFetchOptions<
   NitroFetchRequest,
   T

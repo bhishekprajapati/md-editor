@@ -1,29 +1,21 @@
-import type {
-  DataResponse as ApiDataResponse,
-  ErrorResponse as ApiErrorResponse,
-  Meta,
-} from "~/server/api/types";
+export type PaginationMeta = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
 
-export const DataResponse = <T>(
-  data: T,
-  meta: Meta = {},
-  message: string = "",
-): ApiDataResponse<T> => ({
+export type Meta = {
+  pagination?: PaginationMeta;
+};
+
+export interface DataResponse<D> {
+  data: D;
+  meta?: Meta;
+  error: null;
+}
+
+export const dataResponse = <T>(data: T, meta: Meta = {}): DataResponse<T> => ({
   data,
   meta,
   error: null,
-  message: message,
 });
-
-const error = (name: string, message: string) => ({
-  data: null,
-  error: name,
-  message,
-});
-
-export const ErrorResponse = (err: unknown): ApiErrorResponse => {
-  if (err instanceof Error) {
-    return error(err.name, err.message);
-  }
-  return error("ServerError", "Something went wrong!");
-};
