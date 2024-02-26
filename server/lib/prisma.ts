@@ -1,11 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-let instance;
-
-/**
- * @returns {PrismaClient}
- */
-export const prisma = (function () {
+let instance: PrismaClient | null = null;
+export const prisma: PrismaClient = (function () {
   if (instance) {
     return instance;
   }
