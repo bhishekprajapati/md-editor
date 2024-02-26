@@ -1,28 +1,24 @@
-import type { $Fetch, NitroFetchOptions } from "nitropack";
+import type { $Fetch, NitroFetchOptions, NitroFetchRequest } from "nitropack";
 import type { DataResponse, ErrorResponse } from "~/server/api/types";
 
 type ServerResponse<D = any> = DataResponse<D> | ErrorResponse;
+type Options<T extends "get" | "post" | "patch" | "delete"> = NitroFetchOptions<
+  NitroFetchRequest,
+  T
+>;
 
 interface Repository<GET, GETALL, POST, PATCH, DELETE> {
-  get: (
-    id: string,
-    opts?: NitroFetchOptions<any, "get">,
-  ) => Promise<ServerResponse<GET>>;
-  getAll: (
-    opts?: NitroFetchOptions<any, "get">,
-  ) => Promise<ServerResponse<GETALL>>;
-  post: (
-    payload: any,
-    opts?: NitroFetchOptions<any, "post">,
-  ) => Promise<ServerResponse<POST>>;
+  get: (id: string, opts?: Options<"get">) => Promise<ServerResponse<GET>>;
+  getAll: (opts?: Options<"get">) => Promise<ServerResponse<GETALL>>;
+  post: (payload: any, opts?: Options<"post">) => Promise<ServerResponse<POST>>;
   patch: (
     id: string,
     payload: any,
-    opts?: NitroFetchOptions<any, "patch">,
+    opts?: Options<"patch">,
   ) => Promise<ServerResponse<PATCH>>;
   delete: (
     id: string,
-    opts?: NitroFetchOptions<any, "delete">,
+    opts?: Options<"delete">,
   ) => Promise<ServerResponse<DELETE>>;
 }
 
