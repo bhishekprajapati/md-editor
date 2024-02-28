@@ -1,12 +1,10 @@
-import type { AuthenticatedUser } from "~/server/types";
-
 import { z } from "zod";
-import { dbQuery } from "~/server/lib/db";
+import { db } from "~/server/lib/db";
 
-export async function getOwnFile(fileId: string, user: AuthenticatedUser) {
-  return await dbQuery(async (prisma) => {
+export async function getOwnFile(fileId: string, userId: string) {
+  return await db(async (prisma) => {
     const file = await prisma.file.findUnique({
-      where: { id: fileId, userId: user.id },
+      where: { id: fileId, userId },
     });
 
     return file;
@@ -19,18 +17,18 @@ const getOwnFilesOptions = z.object({
 });
 export async function getOwnFiles(
   opts: z.infer<typeof getOwnFilesOptions>,
-  user: AuthenticatedUser,
+  userId: string,
 ) {
-  return await dbQuery(async (prisma) => {
+  return await db(async (prisma) => {
     const { page, pageSize } = await getOwnFilesOptions.parseAsync(opts);
     const totalFiles = await prisma.file.count({
       where: {
-        userId: user.id,
+        userId,
       },
     });
 
     const files = await prisma.file.findMany({
-      where: { userId: user.id },
+      where: { userId },
       orderBy: {
         updatedAt: "desc",
       },
@@ -48,7 +46,7 @@ export async function getOwnFiles(
 }
 
 export async function getPublicFile(fileId: string) {
-  return await dbQuery(async (prisma) => {
+  return await db(async (prisma) => {
     const file = await prisma.file.findUnique({
       where: {
         id: fileId,
@@ -60,12 +58,12 @@ export async function getPublicFile(fileId: string) {
   });
 }
 
-export async function getSharedFile(fileId: string, user: AuthenticatedUser) {
-  return await dbQuery(async (prisma) => {
+export async function getSharedFile(fileId: string, userId: string) {
+  return await db(async (prisma) => {
     const file = await prisma.sharedFile.findFirst({
       where: {
         fileId,
-        userId: user.id,
+        userId: userId,
       },
       include: {
         file: true,

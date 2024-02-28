@@ -2,7 +2,10 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   typescript: {
-    typeCheck: true,
+    typeCheck: "build",
+  },
+  build: {
+    transpile: ["trpc-nuxt"],
   },
   modules: [
     "@nuxtjs/supabase",

@@ -20,7 +20,7 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-export async function dbQuery<R>(
+export async function db<R>(
   queryFn: (prisma: PrismaClientSingleton) => Promise<R>,
 ): ReturnType<typeof queryFn> {
   try {
