@@ -1,21 +1,6 @@
-export type PaginationMeta = {
-  page: number;
-  pageSize: number;
-  totalPages: number;
-};
-
-export type Meta = {
-  pagination?: PaginationMeta;
-};
-
-export interface DataResponse<D> {
-  data: D;
-  meta?: Meta;
-  error: null;
-}
+import type { DataResponse, Meta } from "~/server/types";
 
 export const dataResponse = <T>(data: T, meta: Meta = {}): DataResponse<T> => ({
-  data,
+  results: data,
   meta,
-  error: null,
 });

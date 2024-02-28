@@ -1,5 +1,6 @@
+import type { AuthenticatedUser } from "~/server/types";
+
 import { z } from "zod";
-import { AuthenticatedUser } from "~/server/types";
 import { dbQuery } from "~/server/lib/db";
 
 export async function getOwnFile(fileId: string, user: AuthenticatedUser) {
