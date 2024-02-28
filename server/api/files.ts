@@ -1,135 +1,130 @@
 import type { EventHandler } from "h3";
+import type { AuthenticatedUser } from "~/server/types";
 
-import { prisma } from "~/server/lib/prisma";
-import { dataResponse } from "~/server/utils/api";
-import { fileCreationSchema } from "~/utils/validators";
-import { filePatchSchema } from "~/utils/validators";
-import defineSafeEventHandler from "~/server/utils/handler";
+import { z } from "zod";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
-const GET: EventHandler = async (event) => {
-  try {
-    const { user } = event.context;
-    const { access } = getQuery(event);
-    const { id } = getRouterParams(event);
+import { dataResponse } from "~/server/utils/api";
+import defineSafeEventHandler from "~/server/utils/handler";
+import {
+  getOwnFile,
+  getOwnFiles,
+  getPublicFile,
+  getSharedFile,
+} from "~/server/lib/prisma";
+import { dbQuery } from "~/server/lib/db";
 
-    /**
-     * if access isn't queried
-     * then look in the user's own files
-     */
-    if (!access) {
-      const file = await prisma.file.findUniqueOrThrow({
-        where: { id, userId: user.id },
-      });
-      return dataResponse(file);
-    }
+const GETQuerySchema = z.object({
+  access: z.enum(["public", "shared"]).optional(),
+});
 
-    if (access === "public") {
-      const file = await prisma.file.findUniqueOrThrow({
-        where: {
-          id,
-        },
-      });
-
-      if (file.private) {
-        throw createError({
-          statusCode: StatusCodes.FORBIDDEN,
-          statusMessage: getReasonPhrase(StatusCodes.FORBIDDEN),
-        });
-      }
-
-      return dataResponse(file);
-    }
-
-    if (access === "invited") {
-      const file = await prisma.sharedFile.findUniqueOrThrow({
-        where: {
-          fileId: id,
-          userId: user.id,
-        },
-      });
-
-      return dataResponse(file);
-    }
-  } catch (err) {
-    throw createError({
-      statusCode: StatusCodes.NOT_FOUND,
-      statusMessage: "File not found.",
-    });
-  }
-};
-
-const GETALL: EventHandler = async (event) => {
-  const { user } = event.context;
-  const files = await prisma.file.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  return dataResponse(files);
-};
-
-const POST: EventHandler = async (event) => {
-  const { user } = event.context;
-  const data = fileCreationSchema.parse(await readBody(event));
-  const file = await prisma.file.create({
-    data: {
-      userId: user.id,
-      ...data,
-    },
-  });
-
-  return dataResponse(file);
-};
-
-const PATCH: EventHandler = async (event) => {
-  const { user } = event.context;
-  const body = await readBody(event);
-  const { id, ...data } = await filePatchSchema.parseAsync(body);
-
-  const file = await prisma.file.findUnique({
-    where: {
-      id,
-      userId: user.id,
-    },
-  });
-
+function throwIfFileNotFound(file: any) {
   if (!file) {
     throw createError({
       statusCode: StatusCodes.NOT_FOUND,
       statusMessage: "File not found.",
     });
   }
+}
 
-  const updatedFile = await prisma.file.update({
-    where: {
-      id,
-      userId: user.id,
+export const GET: EventHandler = async (event) => {
+  const user = event.context.user as AuthenticatedUser;
+  const parsedQueries = GETQuerySchema.safeParse(getQuery<object>(event));
+  const requestedFileId = getRouterParams(event)?.id;
+
+  if (!parsedQueries.success || !requestedFileId) {
+    throw createError({
+      fatal: true,
+      statusCode: StatusCodes.NOT_FOUND,
+      statusMessage: "Broken link",
+    });
+  }
+
+  const accessQuery = parsedQueries.data.access;
+
+  if (!accessQuery) {
+    const file = await getOwnFile(requestedFileId, user);
+    throwIfFileNotFound(file);
+    return dataResponse(file);
+  }
+
+  if (accessQuery === "public") {
+    const file = await getPublicFile(requestedFileId);
+    throwIfFileNotFound(file);
+    return dataResponse(file);
+  }
+
+  if (accessQuery === "shared") {
+    const file = await getSharedFile(requestedFileId, user);
+    throwIfFileNotFound(file);
+    return dataResponse(file);
+  }
+};
+
+export const GETALL: EventHandler = async (event) => {
+  const user = event.context.user as AuthenticatedUser;
+  const query = getQuery<{ page: any; pageSize: any }>(event);
+  const results = await getOwnFiles(
+    {
+      page: query?.page,
+      pageSize: query?.pageSize,
     },
-    data,
-    // only return the mutated fields
-    select: {
-      id: true,
-      name: !!data?.name,
-      private: !!data?.private,
-      content: !!data?.content,
-      updatedAt: true,
+    user,
+  );
+
+  return dataResponse(results.files, {
+    pagination: {
+      page: results.page,
+      pageSize: results.pageSize,
+      totalPages: results.totalPages,
     },
+  });
+};
+
+export const POST: EventHandler = async (event) => {
+  const user = event.context.user as AuthenticatedUser;
+  const payload = await readBody(event);
+
+  const file = await dbQuery(async (prisma) =>
+    prisma.file.create({
+      data: {
+        userId: user.id,
+        ...payload.data,
+      },
+    }),
+  );
+
+  return dataResponse(file);
+};
+
+export const PATCH: EventHandler = async (event) => {
+  const user = event.context.user as AuthenticatedUser;
+  const payload = await readBody(event);
+
+  const updatedFile = await dbQuery(async (prisma) => {
+    return prisma.file.update({
+      where: {
+        id: payload.data.id,
+        userId: user.id,
+      },
+      data: payload,
+    });
   });
 
   return dataResponse(updatedFile);
 };
 
-const DELETE: EventHandler = async (event) => {
-  const { user } = event.context;
+export const DELETE: EventHandler = async (event) => {
+  const user = event.context.user as AuthenticatedUser;
   const { id } = getRouterParams(event);
 
-  const deletedFile = await prisma.file.delete({
-    where: {
-      id,
-      userId: user.id,
-    },
+  const deletedFile = await dbQuery(async (prisma) => {
+    return prisma.file.delete({
+      where: {
+        id,
+        userId: user.id,
+      },
+    });
   });
 
   return dataResponse(deletedFile);
