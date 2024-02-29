@@ -1,7 +1,6 @@
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -13,11 +12,23 @@ enum FileType {
 }
 
 model User {
-  id         String       @id
-  files      File[]
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  SharedFile SharedFile[]
+  id             String       @id
+  githubId       String
+  githubUsername String
+  files          File[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  SharedFile     SharedFile[]
+  Session        Session[]
+
+  @@unique([id, githubId])
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model File {

@@ -1,5 +1,8 @@
-<script setup>
+<script setup lang="ts">
 const user = useSupabaseUser();
+const { $api } = useNuxtApp();
+
+console.log(await $api.files.write.mutate());
 </script>
 
 <template>
