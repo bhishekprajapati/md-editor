@@ -1,5 +1,4 @@
 import sampleMd from "~/sample-md";
-import { filenameSchema } from "~/utils/validators";
 
 export const useFileStore = defineStore("file", () => {
   const route = useRoute();

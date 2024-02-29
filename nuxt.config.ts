@@ -7,12 +7,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["trpc-nuxt"],
   },
-  modules: [
-    "@nuxtjs/supabase",
-    "@nuxtjs/google-fonts",
-    "@nuxt/ui",
-    "@pinia/nuxt",
-  ],
+  modules: ["@nuxtjs/google-fonts", "@nuxt/ui", "@pinia/nuxt"],
   googleFonts: {
     families: {
       Roboto: [300, 400],
@@ -26,8 +21,5 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  },
-  supabase: {
-    redirect: false,
   },
 });

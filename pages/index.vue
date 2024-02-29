@@ -1,6 +1,4 @@
-<script setup>
-const user = useSupabaseUser();
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="relative py-24 sm:py-32 md:py-40">
@@ -25,7 +23,7 @@ const user = useSupabaseUser();
             <UIcon name="i-heroicons-arrow-right" class="align-middle" />
           </ULink>
 
-          <ButtonSignIn v-if="!user" class="p-4 px-6" />
+          <!-- <ButtonSignIn v-if="!user" class="p-4 px-6" /> -->
         </div>
       </div>
     </UContainer>
