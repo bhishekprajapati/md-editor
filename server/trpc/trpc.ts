@@ -10,7 +10,6 @@
 
 import { TRPCError, initTRPC } from "@trpc/server";
 import type { Context } from "~/server/trpc/context";
-import { csrf } from "~/server/lib/auth";
 
 const t = initTRPC.context<Context>().create();
 

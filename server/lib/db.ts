@@ -4,10 +4,7 @@ import { StatusCodes } from "http-status-codes";
 const prismaClientSingleton = () => {
   return new PrismaClient({
     errorFormat: "pretty",
-    log:
-      process.env.NODE_ENV !== "production"
-        ? ["error", "info", "query", "warn"]
-        : [],
+    log: process.env.NODE_ENV !== "production" ? ["error", "info", "warn"] : [],
   });
 };
 

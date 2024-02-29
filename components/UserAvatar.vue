@@ -1,20 +1,9 @@
 <script setup>
 const router = useRouter();
 const toast = useToast();
-const supabase = useSupabaseClient();
-const user = useSupabaseUser();
+const user = await useUser();
 
-async function signOut() {
-  const { error } = await supabase.auth.signOut({});
-
-  if (error) {
-    toast.add({ title: "Failed to sign out!" });
-    console.error(error);
-    return;
-  }
-
-  router.push("/");
-}
+async function signOut() {}
 
 const items = [
   [
@@ -39,6 +28,6 @@ const items = [
     mode="hover"
     :items="items"
     :popper="{ placement: 'bottom-start' }">
-    <UAvatar :alt="user.email.toUpperCase()" size="md" />
+    <UAvatar :alt="user.githubUsername.toUpperCase()" size="md" />
   </UDropdown>
 </template>
