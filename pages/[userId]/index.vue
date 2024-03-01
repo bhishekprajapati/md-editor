@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   middleware: ["auth"],
 });
 </script>
 
 <template>
-  <TheFile />
+  <UserFiles />
 </template>

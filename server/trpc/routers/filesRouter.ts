@@ -24,7 +24,8 @@ export const filesRouter = router({
           break;
 
         case "private":
-          file = await getSharedFile(fileId, userId);
+          const sharedFile = await getSharedFile(fileId, userId);
+          file = sharedFile?.file;
           break;
 
         case "public":

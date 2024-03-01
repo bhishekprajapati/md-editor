@@ -1,4 +1,4 @@
-export default `# Welcome to Markdown
+const md = `# Welcome to Markdown
 
 Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents.
 
@@ -32,3 +32,5 @@ This markdown editor allows for inline-code snippets, like this: \`<p>I'm inline
   <h1>This is a larger code block</h1>
 </main>
 \`\`\``;
+
+export default md;

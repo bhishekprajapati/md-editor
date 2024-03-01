@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="relative py-24 sm:py-32 md:py-40">
     <UContainer class="gap-16 sm:gap-y-24">
@@ -15,16 +13,12 @@
           SyncWords. Effortless teamwork, anytime, anywhere
         </p>
 
-        <div class="inline-flex items-center gap-x-4">
-          <ULink
-            to="/editor/new"
-            class="rounded-full bg-slate-950 p-4 text-white shadow-2xl shadow-slate-700 dark:bg-white dark:text-slate-950">
-            <span class="mr-2"> Get Started </span>
-            <UIcon name="i-heroicons-arrow-right" class="align-middle" />
-          </ULink>
-
-          <!-- <ButtonSignIn v-if="!user" class="p-4 px-6" /> -->
-        </div>
+        <ULink
+          to="/editor/new"
+          class="rounded-full bg-slate-950 p-4 text-white shadow-2xl shadow-slate-700 dark:bg-white dark:text-slate-950">
+          <span class="mr-2"> Get Started </span>
+          <UIcon name="i-heroicons-arrow-right" class="align-middle" />
+        </ULink>
       </div>
     </UContainer>
   </div>

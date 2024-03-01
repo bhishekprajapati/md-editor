@@ -1,19 +1,19 @@
-<script setup>
-const props = defineProps({
-  value: {
-    type: String,
-    default: "",
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-});
+<script setup lang="ts">
 const emits = defineEmits(["change"]);
+const props = withDefaults(
+  defineProps<{
+    icon: string;
+    value: string;
+    disabled: boolean;
+    loading: boolean;
+  }>(),
+  {
+    value: "",
+    icon: "i-heroicons-pencil-square",
+    disabled: false,
+    loading: false,
+  },
+);
 
 const fieldValue = ref(props.value);
 const isEditing = ref(false);
@@ -42,7 +42,7 @@ function notify() {
         @click="isEditing = true"
         color="white"
         variant="ghost"
-        :icon="props.disabled ? '' : 'i-heroicons-pencil-square'"
+        :icon="props.disabled ? '' : props.icon"
         :disabled="props.disabled">
         {{ `${props.value}.md` }}
       </UButton>

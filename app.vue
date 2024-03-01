@@ -7,8 +7,6 @@ useHead({
     lang: "en",
   },
 });
-const { $api, $ref } = useNuxtApp();
-console.log($ref);
 </script>
 
 <template>
@@ -28,7 +26,7 @@ console.log($ref);
         'mt-16': isIndexPath,
       }">
       <div class="relative" v-if="isIndexPath">
-        <GridLines />
+        <UiGridLines />
         <UContainer>
           <NuxtPage />
         </UContainer>

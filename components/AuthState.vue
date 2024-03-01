@@ -1,6 +1,5 @@
-<script setup>
+<script setup lang="ts">
 const router = useRouter();
-const toast = useToast();
 const user = await useUser();
 
 async function signOut() {}
@@ -30,4 +29,10 @@ const items = [
     :popper="{ placement: 'bottom-start' }">
     <UAvatar :alt="user.githubUsername.toUpperCase()" size="md" />
   </UDropdown>
+  <ULink
+    v-else
+    to="/auth/sigin"
+    class="rounded-full border border-slate-950 p-4 px-6 dark:border-white">
+    Sign in
+  </ULink>
 </template>

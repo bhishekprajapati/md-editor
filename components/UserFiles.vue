@@ -1,14 +1,15 @@
-<script setup>
-const { pending, data: files } = await useFetch("/api/files");
+<script setup lang="ts">
+const { $api } = useNuxtApp();
+const query = await $api.files.list.useQuery({ page: 1 });
 
-definePageMeta({
-  middleware: ["auth"],
-});
+const files = computed(() => query.data.value?.files);
+const isPending = computed(() => query.status.value === "pending");
+const isEmptyList = computed(() => !!query.data.value?.files.length);
 </script>
 
 <template>
-  <section v-if="!pending" class="p-16">
-    <div v-if="!files?.length">
+  <section v-if="!isPending" class="p-16">
+    <div v-if="!isEmptyList">
       <div
         class="rounded-md p-16 text-center outline-dashed outline-gray-200 dark:outline-slate-800">
         <div class="mb-2">
@@ -33,7 +34,7 @@ definePageMeta({
         </ULink>
       </header>
       <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <FileCard v-for="file in files" :key="file.id" :data="file" />
+        <UiCardFile v-for="file in files" :key="file.id" :file="file" />
       </div>
     </div>
   </section>
