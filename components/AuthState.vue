@@ -1,21 +1,20 @@
 <script setup lang="ts">
 const router = useRouter();
-const user = await useUser();
-
-async function signOut() {}
+const { signout } = useAuth();
+const { user } = await useUser();
 
 const items = [
   [
     {
       label: "Files",
       icon: "i-heroicons-document-text",
-      click: () => router.push("/files"),
+      click: () => router.push(`/${user.data.value?.id}`),
     },
     {
       label: "Sign out",
       labelClass: "text-red-500",
       icon: "i-heroicons-arrow-right-start-on-rectangle",
-      click: signOut,
+      click: signout,
     },
   ],
 ];
@@ -23,16 +22,10 @@ const items = [
 
 <template>
   <UDropdown
-    v-if="user"
+    v-if="user.data.value"
     mode="hover"
     :items="items"
     :popper="{ placement: 'bottom-start' }">
-    <UAvatar :alt="user.githubUsername.toUpperCase()" size="md" />
+    <UAvatar :alt="user.data.value.githubUsername.toUpperCase()" size="md" />
   </UDropdown>
-  <ULink
-    v-else
-    to="/auth/sigin"
-    class="rounded-full border border-slate-950 p-4 px-6 dark:border-white">
-    Sign in
-  </ULink>
 </template>

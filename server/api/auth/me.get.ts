@@ -1,11 +1,13 @@
-import { appRouter } from "~/server/trpc/routers";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 export default defineEventHandler(async (event) => {
-  const caller = appRouter.createCaller({
-    event,
-    session: null,
-    user: null,
-  });
-
-  return await caller.user.me();
+  const { user } = event.context;
+  if (!user) {
+    const code = StatusCodes.UNAUTHORIZED;
+    throw createError({
+      statusCode: code,
+      statusMessage: getReasonPhrase(code),
+    });
+  }
+  return user;
 });

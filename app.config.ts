@@ -10,4 +10,11 @@ export default defineAppConfig({
       background: "bg-white",
     },
   },
+  auth: {
+    pages: {
+      signin: "/auth/signin",
+      signinRedirect: "/", // redirecting authenticated user
+      signoutRedirect: "/auth/signin", // redirecting after signout
+    },
+  },
 });

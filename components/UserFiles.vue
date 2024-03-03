@@ -11,7 +11,7 @@ const isEmptyList = computed(() => !!query.data.value?.files.length);
   <section v-if="!isPending" class="p-16">
     <div v-if="!isEmptyList">
       <div
-        class="rounded-md p-16 text-center outline-dashed outline-gray-200 dark:outline-slate-800">
+        class="rounded-md p-16 text-center outline-dashed outline-2 outline-gray-200 dark:outline-slate-800">
         <div class="mb-2">
           <img src="/no-files-state.svg" class="mb-8 inline-block h-24 w-24" />
           <p class="text-2xl text-slate-950 dark:text-white">
@@ -38,5 +38,5 @@ const isEmptyList = computed(() => !!query.data.value?.files.length);
       </div>
     </div>
   </section>
-  <Spinner v-else class="h-16 w-16 text-yellow-400" />
+  <UiSpinner v-else size="md" />
 </template>

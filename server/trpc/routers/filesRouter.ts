@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { protectedProcedure, router } from "~/server/trpc/trpc";
-import { db } from "~/server/lib/db";
 import { getOwnFile, getPublicFile, getSharedFile } from "~/server/lib/prisma";
 import { TRPCError } from "@trpc/server";
 
@@ -52,6 +51,7 @@ export const filesRouter = router({
       }),
     )
     .query(async ({ ctx, input: opts }) => {
+      const { db } = ctx;
       const PAGE_SIZE = 10;
       const files = await db(
         async (prisma) =>
@@ -79,18 +79,18 @@ export const filesRouter = router({
         content: z.string().trim().min(0).max(10_000),
       }),
     )
-    .mutation(
-      async ({ ctx, input: payload }) =>
-        await db(
-          async (prisma) =>
-            await prisma.file.create({
-              data: {
-                userId: ctx.user.id,
-                ...payload,
-              },
-            }),
-        ),
-    ),
+    .mutation(async ({ ctx, input: payload }) => {
+      const { db } = ctx;
+      return await db(
+        async (prisma) =>
+          await prisma.file.create({
+            data: {
+              userId: ctx.user.id,
+              ...payload,
+            },
+          }),
+      );
+    }),
 
   update: protectedProcedure
     .input(
@@ -104,6 +104,7 @@ export const filesRouter = router({
       }),
     )
     .mutation(async ({ ctx, input: payload }) => {
+      const { db } = ctx;
       const updatedFile = await db(async (prisma) => {
         return await prisma.file.update({
           where: { id: payload.fileId, userId: ctx.user.id },
@@ -117,6 +118,7 @@ export const filesRouter = router({
   delete: protectedProcedure
     .input(z.string().min(1))
     .mutation(async ({ input: fileId, ctx }) => {
+      const { db } = ctx;
       return await db(async (prisma) => {
         return await prisma.file.delete({
           where: {

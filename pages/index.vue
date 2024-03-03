@@ -1,4 +1,12 @@
+<script setup lang="ts">
+const config = useAppConfig();
+const { user } = await useUser();
+</script>
+
 <template>
+  <Head>
+    <Title>Markdown Editor | Real time markdown editor.</Title>
+  </Head>
   <div class="relative py-24 sm:py-32 md:py-40">
     <UContainer class="gap-16 sm:gap-y-24">
       <div class="text-center">
@@ -14,7 +22,11 @@
         </p>
 
         <ULink
-          to="/editor/new"
+          :to="
+            user.data.value
+              ? `/${user.data.value.id}`
+              : config.auth.pages.signin
+          "
           class="rounded-full bg-slate-950 p-4 text-white shadow-2xl shadow-slate-700 dark:bg-white dark:text-slate-950">
           <span class="mr-2"> Get Started </span>
           <UIcon name="i-heroicons-arrow-right" class="align-middle" />

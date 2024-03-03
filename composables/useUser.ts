@@ -1,13 +1,9 @@
 import type { User } from "lucia";
 
-export default async function useUser(): Promise<User | null | undefined> {
-  const { $api } = useNuxtApp();
-
-  if (process.client) {
-    return await $api.user.me.query();
-  }
-
-  if (process.server) {
-    return await $fetch<User>("/api/auth/me");
-  }
+export default async function useUser() {
+  const query = await useFetch<User | null>("/api/auth/me");
+  return {
+    user: query,
+    query,
+  };
 }
