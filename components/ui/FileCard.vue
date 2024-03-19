@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { FileRead } from "~/types/client";
 import moment from "moment";
 
 const props = defineProps<{
-  file: FileRead;
+  file: any;
 }>();
+const user = await useUser();
 </script>
 
 <template>
-  <ULink class="text-left" :to="`/editor/${props.file.id}`">
+  <ULink
+    class="text-left"
+    :to="`${user.user.data.value?.id}/editor/${props.file.id}`">
     <UCard>
       <article>
         <h2 class="mb-4">

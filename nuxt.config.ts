@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["trpc-nuxt"],
   },
-  modules: ["@nuxtjs/google-fonts", "@nuxt/ui", "@pinia/nuxt"],
+  modules: ["@nuxtjs/google-fonts", "@nuxt/ui", "@pinia/nuxt", "@vueuse/nuxt"],
   googleFonts: {
     families: {
       Roboto: [300, 400],

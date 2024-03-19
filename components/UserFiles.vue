@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { $api } = useNuxtApp();
 const query = await $api.files.list.useQuery({ page: 1 });
-
+const { user } = await useUser();
 const files = computed(() => query.data.value?.files);
 const isPending = computed(() => query.status.value === "pending");
 const isEmptyList = computed(() => !!query.data.value?.files.length);
@@ -19,7 +19,7 @@ const isEmptyList = computed(() => !!query.data.value?.files.length);
           </p>
         </div>
         <ULink
-          to="/editor/new"
+          :to="`/${user.data.value?.id}/editor`"
           class="bg-primary inline-flex items-center gap-x-2 rounded-full px-4 py-3 text-slate-950 shadow-xl">
           <UIcon name="i-heroicons-plus" /> New File
         </ULink>
@@ -28,13 +28,13 @@ const isEmptyList = computed(() => !!query.data.value?.files.length);
     <div v-else>
       <header class="mb-12">
         <ULink
-          to="/editor/new"
+          :to="`/${user.data.value?.id}/editor`"
           class="inline-flex items-center gap-x-2 rounded-full bg-blue-200 px-4 py-3 text-slate-950 shadow">
           <UIcon name="i-heroicons-plus" /> New File
         </ULink>
       </header>
       <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <UiCardFile v-for="file in files" :key="file.id" :file="file" />
+        <UiFileCard v-for="file in files" :key="file.id" :file="file" />
       </div>
     </div>
   </section>

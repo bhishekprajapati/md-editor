@@ -1,29 +1,27 @@
 <script setup lang="ts">
-const emits = defineEmits(["change"]);
-const props = withDefaults(
-  defineProps<{
-    icon: string;
-    value: string;
-    disabled: boolean;
-    loading: boolean;
-  }>(),
-  {
-    value: "",
-    icon: "i-heroicons-pencil-square",
-    disabled: false,
-    loading: false,
-  },
-);
+interface Props {
+  icon?: string;
+  value: string;
+  disabled?: boolean;
+  loading?: boolean;
+}
 
-const fieldValue = ref(props.value);
+interface Emits {
+  (e: "change", value: string): void;
+}
+
+const emits = defineEmits<Emits>();
+const props = withDefaults(defineProps<Props>(), {
+  icon: "i-heroicons-pencil-square",
+  disabled: false,
+  loading: false,
+});
+
 const isEditing = ref(false);
-
-function notify() {
-  isEditing.value = false;
-
-  // if have local modifications
-  if (props.value !== fieldValue.value) {
-    emits("change", fieldValue.value);
+function onChange(e: Event) {
+  const input = e.target as HTMLInputElement;
+  if (props.value !== input.value) {
+    emits("change", input.value);
   }
 }
 </script>
@@ -33,10 +31,11 @@ function notify() {
     <div :class="{ hidden: props.loading }">
       <UInput
         v-if="isEditing"
-        v-model="fieldValue"
-        @blur="notify"
+        :modelValue="props.value"
         :disabled="props.disabled"
-        autofocus />
+        autofocus
+        @change="onChange"
+        @blur="isEditing = false" />
       <UButton
         v-else
         @click="isEditing = true"

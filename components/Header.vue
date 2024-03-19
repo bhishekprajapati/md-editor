@@ -15,8 +15,8 @@ const isIndexPath = computed(() => route.path === "/");
       <UIcon name="i-heroicons-bars-3" class="h-6 w-6" />
     </UButton>
     <IconLogo class="mr-12" />
-    <div id="editor-actions"></div>
-    <UiThemeToggle class="me-2 ms-auto" />
+    <div class="flex-1" id="editor-actions"></div>
+    <UiThemeToggle class="me-2 ms-8" />
     <AuthState />
     <USlideover v-model="isOpen" side="left" class="w-[15%]"> </USlideover>
   </div>
