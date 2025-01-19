@@ -21,10 +21,7 @@ provide("toggle", toggle);
     </template>
 
     <template v-slot:viewport>
-      <header class="h-14 md:h-[4.5rem]">
-        <slot name="header"></slot>
-      </header>
-      <main class="h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4.5rem)]">
+      <main class="h-dvh">
         <slot name="main"></slot>
       </main>
     </template>
