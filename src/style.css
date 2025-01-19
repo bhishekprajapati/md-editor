@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .display-m {
+    @apply font-display text-[0.9375rem] text-black-600;
+  }
+
+  .display-s {
+    @apply font-display text-[0.875rem] tracking-[0.1428em] text-black-600;
+  }
+
+  .text-body {
+    @apply font-display text-[0.8125rem] text-black-600;
+  }
+
+  .text-code {
+    @apply font-mono text-[0.875rem] leading-6 text-black-600;
+  }
+}
+
+@layer components {
+  .viewport {
+    @apply transition-all duration-500;
+  }
+
+  .collapsible {
+    @apply fixed bottom-0 top-0 z-50 w-0 overflow-x-hidden bg-black-900 transition-all duration-500;
+  }
+
+  .collapsible-content {
+    @apply w-full -translate-x-full  opacity-0;
+  }
+
+  .collapsible + .viewport {
+    @apply ml-0;
+  }
+
+  .collapsible.expand {
+    @apply w-64;
+  }
+
+  .collapsible.expand > .collapsible-content {
+    @apply translate-x-0 opacity-100;
+  }
+
+  .collapsible.expand + .viewport {
+    @apply ml-64;
+  }
+}
+
+@layer components {
+  .bar {
+    @apply inline-block h-0.5 w-6 bg-cream;
+  }
+
+  .hamburger {
+    @apply inline-flex h-14 w-14 flex-col items-center justify-center gap-y-1 bg-black-600 md:h-[4.5rem] md:w-[4.5rem];
+  }
+
+  .hamburger > .bar:nth-child(2n + 1) {
+    @apply transition-transform duration-200;
+  }
+
+  .hamburger.active > .bar:nth-child(1) {
+    @apply translate-y-1.5 rotate-45;
+  }
+
+  .hamburger.active > .bar:nth-child(2) {
+    @apply opacity-0;
+  }
+
+  .hamburger.active > .bar:nth-child(3) {
+    @apply -translate-y-1.5 -rotate-45;
+  }
+}
+
+@layer components {
+  .markdown-preview {
+    @apply font-preview text-[0.875rem] leading-6 text-black-600;
+  }
+
+  .markdown-preview h1,
+  .markdown-preview h2,
+  .markdown-preview h3,
+  .markdown-preview h4,
+  .markdown-preview h5,
+  .markdown-preview h6 {
+    @apply mb-[1.25rem] font-preview font-bold leading-[1.33] text-black-600 dark:text-white;
+  }
+
+  .markdown-preview h1 {
+    @apply text-[2rem];
+  }
+
+  .markdown-preview h2 {
+    @apply mb-[1.37rem] text-[1.75rem] font-light;
+  }
+
+  .markdown-preview h3 {
+    @apply text-[1.5rem];
+  }
+
+  .markdown-preview h4 {
+    @apply text-[1.25rem];
+  }
+
+  .markdown-preview h5 {
+    @apply text-[1rem];
+  }
+
+  .markdown-preview h6 {
+    @apply text-[0.875rem] !text-orange-900;
+  }
+
+  .markdown-preview blockquote {
+    @apply mb-6 rounded-lg border-l-[0.25rem] border-orange-900 bg-orange-800 bg-opacity-10 p-6 dark:bg-black-700;
+  }
+
+  .markdown-preview > p {
+    @apply mb-5;
+  }
+  .markdown-preview li:not(:last-child) {
+    @apply mb-1;
+  }
+
+  .markdown-preview ul,
+  .markdown-preview ol {
+    @apply mb-5;
+  }
+
+  .markdown-preview ul li::before {
+    content: "";
+    @apply mx-4 inline-block h-1 w-1 rounded-full bg-orange-900 align-middle;
+  }
+
+  .markdown-preview ol {
+    counter-reset: decimal;
+  }
+
+  .markdown-preview ol li {
+    counter-increment: decimal;
+  }
+
+  .markdown-preview ol li::before {
+    content: counter(decimal) ".";
+    @apply mx-4;
+  }
+
+  .markdown-preview pre {
+    @apply rounded-lg bg-cream p-6 dark:bg-black-700;
+  }
+
+  .markdown-preview pre:not(:last-child) {
+    @apply mb-6;
+  }
+
+  .markdown-preview pre > code {
+    @apply whitespace-pre-wrap dark:text-white;
+  }
+
+  .markdown-preview a {
+    @apply underline;
+  }
+
+  .markdown-preview blockquote > p {
+    @apply font-bold;
+  }
+
+  .markdown-preview p,
+  .markdown-preview li,
+  .markdown-preview blockquote {
+    @apply dark:text-cream;
+  }
+}

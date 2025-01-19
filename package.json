@@ -4,47 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev --host",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "p:mig": "npx prisma migrate dev"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@lucia-auth/adapter-prisma": "^4.0.0",
-    "@nuxt/ui": "^2.13.0",
-    "@pinia/nuxt": "^0.5.1",
-    "@prisma/client": "^5.10.2",
-    "@trpc/client": "^10.45.1",
-    "@trpc/server": "^10.45.1",
-    "arctic": "^1.2.1",
-    "consola": "^3.2.3",
-    "copy-to-clipboard": "^3.3.3",
-    "http-status-codes": "^2.3.0",
-    "lucia": "^3.0.1",
-    "markdown-it": "^14.0.0",
-    "moment": "^2.30.1",
+    "markdown-it": "13.0.1",
+    "monaco-editor": "^0.44.0",
+    "pinia": "^2.1.6",
     "tailwind-scrollbar": "^3.0.5",
-    "trpc-nuxt": "^0.10.19"
+    "unstorage": "^1.9.0",
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@nuxtjs/google-fonts": "^3.1.3",
-    "@shikijs/markdown-it": "^1.0.0",
-    "@types/markdown-it": "^13.0.7",
-    "@vueuse/core": "^10.9.0",
-    "@vueuse/nuxt": "^10.9.0",
-    "monaco-editor": "^0.45.0",
-    "nuxt": "^3.10.0",
-    "nuxt-monaco-editor": "^1.2.7",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.30",
     "prettier": "3.0.3",
     "prettier-plugin-tailwindcss": "0.5.4",
-    "prisma": "^5.10.2",
-    "shiki": "^1.0.0",
-    "typescript": "^5.3.3",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5",
-    "vue-tsc": "^1.8.27",
-    "zod": "^3.22.4"
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.5"
   }
 }
